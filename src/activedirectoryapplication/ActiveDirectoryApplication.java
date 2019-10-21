@@ -38,7 +38,7 @@ public class ActiveDirectoryApplication {
      */
     
     
-        public static void CreateUser() throws NamingException {
+        public static void CreateUser(String userName, String department) throws NamingException {
         
             
          DirContext ctx = AuthenticateAD();
@@ -49,9 +49,8 @@ public class ActiveDirectoryApplication {
         oc.add("organizationalPerson");
         oc.add("user");
         attrs.put(oc);
-        attrs.put(new BasicAttribute("cn", "testuser2"));
-        attrs.put(new BasicAttribute("name","test"));
-        ctx.createSubcontext("CN=testuser2,OU=Testusers,DC=lab,DC=home", attrs);
+        attrs.put(new BasicAttribute("cn", userName));
+        ctx.createSubcontext("CN="+userName + ",OU=" + department +",DC=lab,DC=home", attrs);
         ctx.close();
     
     
@@ -100,7 +99,7 @@ DirContext ctx = new InitialDirContext(ldapEnv);
         // TODO code application logic here
         
         
-          CreateUser();
+          
           
           
     }
