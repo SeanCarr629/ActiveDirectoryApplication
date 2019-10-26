@@ -37,9 +37,10 @@ public class ActiveDirectoryApplication {
    
     //Method To Create New User
     
-        public static void CreateUser(String userName, String enteredLocation) throws NamingException {
+        public static void CreateUser(String userName, String enteredLocation, String enteredDepartment,
+        String enteredPhoneNumber) throws NamingException {
         
-         String location = " ";   
+         String orgUnit = " ", city = " ", office = " ", company = "Topaz";   
             
         //Call method to authenticate to AD    
         DirContext ctx = AuthenticateAD();
@@ -57,37 +58,44 @@ public class ActiveDirectoryApplication {
         //Switch statement to choose proper OU     
         switch (enteredLocation) {
         case "New York":
-            location = "Topaz-NY";
+            orgUnit = "Topaz-NY";
+            city = "Holtsville";
+            office = "Holtsville, NY";
             break;
          case "California":
-            location = "Topaz-CA";
+            orgUnit = "Topaz-CA";
             break;
          case "Vero Beach":
-             location = "Vero Beach";
+             orgUnit = "Vero Beach";
              break;
          case "Jackonsville":
              System.out.println("Thursday");
              break;
          case "Pennysylvania":
-             location = "Topaz-PA";
+             orgUnit = "Topaz-PA";
              break;
   }
         
         
       int emptySpace =  userName.indexOf(" ");
-      
+      String firstName = userName.substring(0, emptySpace);
+      String lastName = userName.substring(emptySpace);
+      String emailAddress = firstName + "." + lastName.trim() + "@topaz-usa.com";
       
         
          //Add user attributes
         
         attrs.put("cn", userName);
-        attrs.put("givenName", userName.substring(0, emptySpace));
-        attrs.put("sn", userName.substring(emptySpace));
+        attrs.put("givenName", firstName);
+        attrs.put("sn",lastName);
+        attrs.put("l", city);
+        attrs.put("company", company);
+        attrs.put("department", enteredDepartment);
+        attrs.put("mail", emailAddress);
+        attrs.put("physicalDeliveryOfficeName", office);
         
         
-        
-        
-        ctx.createSubcontext("CN="+userName + ",OU=users" + ",OU=" + location + ",DC=lab,DC=home", attrs);
+        ctx.createSubcontext("CN="+userName + ",OU=users" + ",OU=" + orgUnit + ",DC=lab,DC=home", attrs);
         ctx.close();
     
     
