@@ -31,26 +31,63 @@ import javax.naming.directory.InitialDirContext;
 
 
 
+
 public class ActiveDirectoryApplication {
 
-    /**
-     * @param args the command line arguments
-     */
+   
+    //Method To Create New User
     
-    
-        public static void CreateUser(String userName, String department) throws NamingException {
+        public static void CreateUser(String userName, String enteredLocation) throws NamingException {
         
+         String location = " ";   
             
-         DirContext ctx = AuthenticateAD();
+        //Call method to authenticate to AD    
+        DirContext ctx = AuthenticateAD();
         Attributes attrs = new BasicAttributes(true);
+        
+        //LDAP hierarchy
         Attribute oc = new BasicAttribute("objectclass");
         oc.add("top");
         oc.add("person");
         oc.add("organizationalPerson");
         oc.add("user");
         attrs.put(oc);
-        attrs.put(new BasicAttribute("cn", userName));
-        ctx.createSubcontext("CN="+userName + ",OU=" + department +",DC=lab,DC=home", attrs);
+       
+ 
+        //Switch statement to choose proper OU     
+        switch (enteredLocation) {
+        case "New York":
+            location = "Topaz-NY";
+            break;
+         case "California":
+            location = "Topaz-CA";
+            break;
+         case "Vero Beach":
+             location = "Vero Beach";
+             break;
+         case "Jackonsville":
+             System.out.println("Thursday");
+             break;
+         case "Pennysylvania":
+             location = "Topaz-PA";
+             break;
+  }
+        
+        
+      int emptySpace =  userName.indexOf(" ");
+      
+      
+        
+         //Add user attributes
+        
+        attrs.put("cn", userName);
+        attrs.put("givenName", userName.substring(0, emptySpace));
+        attrs.put("sn", userName.substring(emptySpace));
+        
+        
+        
+        
+        ctx.createSubcontext("CN="+userName + ",OU=users" + ",OU=" + location + ",DC=lab,DC=home", attrs);
         ctx.close();
     
     
@@ -63,29 +100,27 @@ public class ActiveDirectoryApplication {
     
     
     
-    
+    // Method To Authenticate to AD
+        
     public static DirContext AuthenticateAD() throws NamingException
 {
 Hashtable<String, String> ldapEnv;
 ldapEnv = new Hashtable<String, String>(11);
 ldapEnv.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
-//ldapEnv.put(Context.PROVIDER_URL,  "ldap://WIN-4H1ILULLH7H.l:3
+
+//Replace with DC IP Address
+
 ldapEnv.put(Context.PROVIDER_URL,  "ldap://192.168.1.20:389");
 ldapEnv.put(Context.SECURITY_AUTHENTICATION, "simple");
-//ldapEnv.put(Context.SECURITY_PRINCIPAL, "cn=administrateur,cn=users,dc=societe,dc=fr");
+
+//Use admin credentials to connect
 ldapEnv.put(Context.SECURITY_PRINCIPAL, "jdoe@lab.home");
 ldapEnv.put(Context.SECURITY_CREDENTIALS, "Password1234");
        
-            //ldapEnv.put(Context.SECURITY_PROTOCOL, "ssl");
-//ldapEnv.put(Context.SECURITY_PROTOCOL, "simple");
+//Create and return context
 DirContext ctx = new InitialDirContext(ldapEnv);
  return ctx;
        
-
-
-
-
-
 }
 
     
