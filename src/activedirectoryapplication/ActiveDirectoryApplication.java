@@ -38,9 +38,10 @@ public class ActiveDirectoryApplication {
     //Method To Create New User
     
         public static void CreateUser(String userName, String enteredLocation, String enteredDepartment,
-        String enteredPhoneNumber) throws NamingException {
+        String enteredPhoneNumber, String enteredJobTitle) throws NamingException {
         
-         String orgUnit = " ", city = " ", office = " ", company = "Topaz";   
+         String orgUnit = " ", city = " ", office = " ", company = "Topaz", state = " "
+                 ,streetAddress = " ";   
             
         //Call method to authenticate to AD    
         DirContext ctx = AuthenticateAD();
@@ -61,6 +62,8 @@ public class ActiveDirectoryApplication {
             orgUnit = "Topaz-NY";
             city = "Holtsville";
             office = "Holtsville, NY";
+            state = "NY";
+            streetAddress = "925 Wavery Avenue";
             break;
          case "California":
             orgUnit = "Topaz-CA";
@@ -81,6 +84,8 @@ public class ActiveDirectoryApplication {
       String firstName = userName.substring(0, emptySpace);
       String lastName = userName.substring(emptySpace);
       String emailAddress = firstName + "." + lastName.trim() + "@topaz-usa.com";
+      char firstInitial = userName.charAt(0);
+      String loginName = firstInitial + lastName.trim();
       
         
          //Add user attributes
@@ -93,6 +98,15 @@ public class ActiveDirectoryApplication {
         attrs.put("department", enteredDepartment);
         attrs.put("mail", emailAddress);
         attrs.put("physicalDeliveryOfficeName", office);
+        attrs.put("proxyAddresses", "SMTP:" + emailAddress);
+        attrs.put("SamAccountName", loginName);
+        attrs.put("st", state);
+        attrs.put("StreetAddress", streetAddress);
+        attrs.put("userPrincipalName", loginName + "@topaz.local");
+        attrs.put("telephoneNumber", enteredPhoneNumber);
+        attrs.put("des", enteredPhoneNumber);
+        
+        
         
         
         ctx.createSubcontext("CN="+userName + ",OU=users" + ",OU=" + orgUnit + ",DC=lab,DC=home", attrs);

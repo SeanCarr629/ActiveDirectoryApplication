@@ -165,7 +165,7 @@ public class AddUser extends javax.swing.JFrame {
         }
         try {
             CreateUser(TF_UsersName.getText(), List_Location.getSelectedValue(),
-                    List_Departments.getSelectedValue(), TF_UserPhone.getText());
+                    List_Departments.getSelectedValue(), TF_UserPhone.getText(), TF_UserJobTitle.getText());
         } catch (NamingException ex) {
             Logger.getLogger(AddUser.class.getName()).log(Level.SEVERE, null, ex);
         }
