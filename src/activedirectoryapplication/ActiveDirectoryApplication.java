@@ -41,7 +41,7 @@ public class ActiveDirectoryApplication {
         String enteredPhoneNumber, String enteredJobTitle) throws NamingException {
         
          String orgUnit = " ", city = " ", office = " ", company = "Topaz", state = " "
-                 ,streetAddress = " ";   
+                 ,streetAddress = " ", zipcode = " ", country = "US";   
             
         //Call method to authenticate to AD    
         DirContext ctx = AuthenticateAD();
@@ -60,10 +60,12 @@ public class ActiveDirectoryApplication {
         switch (enteredLocation) {
         case "New York":
             orgUnit = "Topaz-NY";
+            
             city = "Holtsville";
             office = "Holtsville, NY";
             state = "NY";
             streetAddress = "925 Wavery Avenue";
+            zipcode = "11742";
             break;
          case "California":
             orgUnit = "Topaz-CA";
@@ -83,6 +85,7 @@ public class ActiveDirectoryApplication {
       int emptySpace =  userName.indexOf(" ");
       String firstName = userName.substring(0, emptySpace);
       String lastName = userName.substring(emptySpace);
+      String fullName = firstName + "" + lastName;
       String emailAddress = firstName + "." + lastName.trim() + "@topaz-usa.com";
       char firstInitial = userName.charAt(0);
       String loginName = firstInitial + lastName.trim();
@@ -104,10 +107,17 @@ public class ActiveDirectoryApplication {
         attrs.put("StreetAddress", streetAddress);
         attrs.put("userPrincipalName", loginName + "@topaz.local");
         attrs.put("telephoneNumber", enteredPhoneNumber);
-        attrs.put("des", enteredPhoneNumber);
+        attrs.put("description", enteredJobTitle);
+        attrs.put("displayName",fullName);
+        attrs.put("c", country);
+        attrs.put("postalCode", zipcode);
+        attrs.put("title", enteredJobTitle);
         
         
         
+        
+        
+       
         
         ctx.createSubcontext("CN="+userName + ",OU=users" + ",OU=" + orgUnit + ",DC=lab,DC=home", attrs);
         ctx.close();
@@ -122,7 +132,8 @@ public class ActiveDirectoryApplication {
     
     
     
-    // Method To Authenticate to AD
+    
+// Method To Authenticate to AD
         
     public static DirContext AuthenticateAD() throws NamingException
 {
@@ -146,19 +157,34 @@ DirContext ctx = new InitialDirContext(ldapEnv);
 }
 
     
+ public static void AutoFillLocationInformation(){
+     
+     
+     
+     
+     
+     
+ }   
     
     
     
     
     
     
-    public static void main(String[] args) throws NamingException {
-        // TODO code application logic here
-        
-        
-          
-          
-          
-    }
     
+//Method to delete user
+  public static void DeleteUser(String userName, String orgUnit) throws NamingException{
+     
+      DirContext ctx = AuthenticateAD();
+      
+      ctx.destroySubcontext("CN="+userName + ",OU=users" + ",OU=" + orgUnit + ",DC=lab,DC=home");
+      
+    
+     }   
+    
+    
+    
+    
+    
+
 }

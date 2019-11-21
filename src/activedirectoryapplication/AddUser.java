@@ -94,7 +94,7 @@ public class AddUser extends javax.swing.JFrame {
             }
         });
 
-        TF_UserPhone.setText("User's Phone Number");
+        TF_UserPhone.setText("Phone");
         TF_UserPhone.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TF_UserPhoneActionPerformed(evt);
@@ -134,17 +134,17 @@ public class AddUser extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel2)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
                     .addComponent(jLabel1)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(45, 45, 45)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TF_UsersName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(TF_UserJobTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(TF_UserPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(31, 31, 31)
                 .addComponent(jButton1)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         pack();
@@ -158,11 +158,7 @@ public class AddUser extends javax.swing.JFrame {
         // TODO add your handling code here:
         
        String userName = TF_UsersName.getText();
-        try {
-            AuthenticateAD();
-        } catch (NamingException ex) {
-            Logger.getLogger(AddUser.class.getName()).log(Level.SEVERE, null, ex);
-        }
+     
         try {
             CreateUser(TF_UsersName.getText(), List_Location.getSelectedValue(),
                     List_Departments.getSelectedValue(), TF_UserPhone.getText(), TF_UserJobTitle.getText());
