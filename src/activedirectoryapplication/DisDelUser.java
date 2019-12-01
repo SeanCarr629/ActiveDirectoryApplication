@@ -124,7 +124,7 @@ public class DisDelUser extends javax.swing.JFrame {
     private void jButton_DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_DeleteActionPerformed
         
         try {
-            DeleteUser(jTextField_UserName.getText(), "Topaz-NY");
+            DeleteUser(jTextField_UserName.getText(), jList_Location.getSelectedValue());
         } catch (NamingException ex) {
             Logger.getLogger(DisDelUser.class.getName()).log(Level.SEVERE, null, ex);
         }

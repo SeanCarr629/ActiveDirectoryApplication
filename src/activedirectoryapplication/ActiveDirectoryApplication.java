@@ -5,6 +5,8 @@
  */
 package activedirectoryapplication;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,15 +35,52 @@ import javax.naming.directory.InitialDirContext;
 
 
 public class ActiveDirectoryApplication {
-
+    
+    
+    //Method to choose OU and location details
+    
+    public static HashMap<String,String> setLocationDetails(String enteredLocation){
+        
+        HashMap<String,String> locationDetails = new HashMap<>();
+        
+        
+            switch (enteredLocation) {
+        case "New York":
+            locationDetails.put("orgUnit", "Topaz-NY");
+            locationDetails.put("city", "Holtsville");
+            locationDetails.put("office", "Holtsville, NY");
+            locationDetails.put("state", "NY");
+            locationDetails.put("streetAddress", "925 Wavery Avenue");
+            locationDetails.put("zipcode", "11742");
+            break;
+         case "California":
+           // orgUnit = "Topaz-CA";
+            break;
+         case "Vero Beach":
+            // orgUnit = "Vero Beach";
+             break;
+         case "Jackonsville":
+             System.out.println("Thursday");
+             break;
+         case "Pennysylvania":
+           //  orgUnit = "Topaz-PA";
+             break;
+  }
+        
+        return locationDetails;
+        
+    }
+       
    
     //Method To Create New User
     
         public static void CreateUser(String userName, String enteredLocation, String enteredDepartment,
         String enteredPhoneNumber, String enteredJobTitle) throws NamingException {
         
-         String orgUnit = " ", city = " ", office = " ", company = "Topaz", state = " "
-                 ,streetAddress = " ", zipcode = " ", country = "US";   
+         //Variables
+         final String company = "Topaz", country = "US";   
+         
+         HashMap<String,String> locationDetails = new HashMap<>();
             
         //Call method to authenticate to AD    
         DirContext ctx = AuthenticateAD();
@@ -55,32 +94,12 @@ public class ActiveDirectoryApplication {
         oc.add("user");
         attrs.put(oc);
        
- 
-        //Switch statement to choose proper OU     
-        switch (enteredLocation) {
-        case "New York":
-            orgUnit = "Topaz-NY";
-            
-            city = "Holtsville";
-            office = "Holtsville, NY";
-            state = "NY";
-            streetAddress = "925 Wavery Avenue";
-            zipcode = "11742";
-            break;
-         case "California":
-            orgUnit = "Topaz-CA";
-            break;
-         case "Vero Beach":
-             orgUnit = "Vero Beach";
-             break;
-         case "Jackonsville":
-             System.out.println("Thursday");
-             break;
-         case "Pennysylvania":
-             orgUnit = "Topaz-PA";
-             break;
-  }
-        
+       //Set location details; orgUnit, city, etc.
+       
+      locationDetails = setLocationDetails(enteredLocation);
+    
+     
+      
         
       int emptySpace =  userName.indexOf(" ");
       String firstName = userName.substring(0, emptySpace);
@@ -96,21 +115,21 @@ public class ActiveDirectoryApplication {
         attrs.put("cn", userName);
         attrs.put("givenName", firstName);
         attrs.put("sn",lastName);
-        attrs.put("l", city);
+        attrs.put("l", locationDetails.get("city"));
         attrs.put("company", company);
         attrs.put("department", enteredDepartment);
         attrs.put("mail", emailAddress);
-        attrs.put("physicalDeliveryOfficeName", office);
+        attrs.put("physicalDeliveryOfficeName", locationDetails.get("office"));
         attrs.put("proxyAddresses", "SMTP:" + emailAddress);
         attrs.put("SamAccountName", loginName);
-        attrs.put("st", state);
-        attrs.put("StreetAddress", streetAddress);
+        attrs.put("st", locationDetails.get("state"));
+        attrs.put("StreetAddress", locationDetails.get("streetAddress"));
         attrs.put("userPrincipalName", loginName + "@topaz.local");
         attrs.put("telephoneNumber", enteredPhoneNumber);
         attrs.put("description", enteredJobTitle);
         attrs.put("displayName",fullName);
         attrs.put("c", country);
-        attrs.put("postalCode", zipcode);
+        attrs.put("postalCode", locationDetails.get("zipcode"));
         attrs.put("title", enteredJobTitle);
         
         
@@ -118,8 +137,8 @@ public class ActiveDirectoryApplication {
         
         
        
-        
-        ctx.createSubcontext("CN="+userName + ",OU=users" + ",OU=" + orgUnit + ",DC=lab,DC=home", attrs);
+        //Create user
+        ctx.createSubcontext("CN="+userName + ",OU=users" + ",OU=" + locationDetails.get("orgUnit") + ",DC=lab,DC=home", attrs);
         ctx.close();
     
     
@@ -157,21 +176,8 @@ DirContext ctx = new InitialDirContext(ldapEnv);
 }
 
     
- public static void AutoFillLocationInformation(){
-     
-     
-     
-     
-     
-     
- }   
-    
-    
-    
-    
-    
-    
-    
+
+        
 //Method to delete user
   public static void DeleteUser(String userName, String orgUnit) throws NamingException{
      
