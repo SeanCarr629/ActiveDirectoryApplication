@@ -81,7 +81,7 @@ public class AddUser extends javax.swing.JFrame {
         jScrollPane1.setViewportView(List_Departments);
 
         List_Location.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "New York", "California", "Vero Beach", "Jacksonville", "Pennysylvania" };
+            String[] strings = { "New York", "California", "Jacksonville", "Pennysylvania" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });

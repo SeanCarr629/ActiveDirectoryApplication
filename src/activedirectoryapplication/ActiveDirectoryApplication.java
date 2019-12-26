@@ -11,6 +11,7 @@ import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.Context;
+import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
@@ -18,6 +19,8 @@ import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.BasicAttributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
+import javax.naming.directory.SearchControls;
+import javax.naming.directory.SearchResult;
 
 /**
  *
@@ -35,6 +38,61 @@ import javax.naming.directory.InitialDirContext;
 
 
 public class ActiveDirectoryApplication {
+    
+     public static void main(String[] args) {
+    
+    /*     try {
+
+             doSearchOU();
+         } catch (NamingException ex) {
+             Logger.getLogger(ActiveDirectoryApplication.class.getName()).log(Level.SEVERE, null, ex);
+         }    */
+    
+     
+     }  
+     
+     
+     
+     
+    //Method to search specific OU for all users in that OU 
+     public static ArrayList<String> doSearchOU(String ou) throws NamingException {
+         
+         
+         
+       
+         
+       DirContext ctx =  AuthenticateAD();
+       ArrayList<String> users = new ArrayList<String>();
+         
+        
+        String searchFilter = "(&(objectClass=person))";
+        String domain = "OU=users,OU=" + ou + ",DC=lab,DC=home";
+        SearchControls searchControls = new SearchControls();
+        searchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+        NamingEnumeration<SearchResult> answer = ctx.search(domain, searchFilter, searchControls);
+        while (answer.hasMoreElements()) {
+            SearchResult sr = (SearchResult) answer.next();
+            
+           
+            String cn = sr.getName();
+            int equalSign =  cn.indexOf("=") + 1;
+            String userName = cn.substring(equalSign);
+            
+            //System.out.println(sr.getName());
+            users.add(userName);
+            
+            
+        }
+        
+        return users;
+    }
+     
+     
+     
+     
+     
+     
+     
     
     
     //Method to choose OU and location details
@@ -54,16 +112,37 @@ public class ActiveDirectoryApplication {
             locationDetails.put("zipcode", "11742");
             break;
          case "California":
-           // orgUnit = "Topaz-CA";
+            locationDetails.put("orgUnit", "Topaz-CA");
+            locationDetails.put("city", "San Fernando");
+            locationDetails.put("office", "San Fernando, CA");
+            locationDetails.put("state", "CA");
+            locationDetails.put("streetAddress", "225 Parkside Drive");
+            locationDetails.put("zipcode", "91340");
             break;
          case "Vero Beach":
             // orgUnit = "Vero Beach";
-             break;
+            locationDetails.put("orgUnit", "Topaz-FL");
+            locationDetails.put("city", "Jacksonville");
+            locationDetails.put("office", "Jacksonville, FL");
+            locationDetails.put("state", "FL");
+            locationDetails.put("streetAddress", "780 Whittaker Road");
+            locationDetails.put("zipcode", "32218");
+            break;
          case "Jackonsville":
-             System.out.println("Thursday");
+            locationDetails.put("orgUnit", "Topaz-FL");
+            locationDetails.put("city", "Jacksonville");
+            locationDetails.put("office", "Jacksonville, FL");
+            locationDetails.put("state", "FL");
+            locationDetails.put("streetAddress", "780 Whittaker Road");
+            locationDetails.put("zipcode", "32218");
              break;
          case "Pennysylvania":
-           //  orgUnit = "Topaz-PA";
+            locationDetails.put("orgUnit", "Topaz-PA");
+            locationDetails.put("city", "Langhorne");
+            locationDetails.put("office", "Langhorne, PA");
+            locationDetails.put("state", "PA");
+            locationDetails.put("streetAddress", "905 Wheeler Way");
+            locationDetails.put("zipcode", "19047");
              break;
   }
         
@@ -156,6 +235,7 @@ public class ActiveDirectoryApplication {
         
     public static DirContext AuthenticateAD() throws NamingException
 {
+    
 Hashtable<String, String> ldapEnv;
 ldapEnv = new Hashtable<String, String>(11);
 ldapEnv.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
@@ -181,9 +261,9 @@ DirContext ctx = new InitialDirContext(ldapEnv);
 //Method to delete user
   public static void DeleteUser(String userName, String orgUnit) throws NamingException{
      
-      DirContext ctx = AuthenticateAD();
+   //   DirContext ctx = AuthenticateAD();
       
-      ctx.destroySubcontext("CN="+userName + ",OU=users" + ",OU=" + orgUnit + ",DC=lab,DC=home");
+   //   ctx.destroySubcontext("CN="+userName + ",OU=users" + ",OU=" + orgUnit + ",DC=lab,DC=home");
       
     
      }   
