@@ -54,7 +54,7 @@ public class FirstPage extends javax.swing.JFrame {
             }
         });
 
-        jButtonCreateUser1.setText("Disable/Delete User");
+        jButtonCreateUser1.setText("Delete User");
         jButtonCreateUser1.setToolTipText("");
         jButtonCreateUser1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -108,7 +108,15 @@ public class FirstPage extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCreateUserActionPerformed
 
     private void jButtonCreateUser1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCreateUser1ActionPerformed
-        // TODO add your handling code here:
+        
+                 dispose();
+                DisDelUser disDelUser = new DisDelUser();
+                disDelUser.setVisible(true);
+        
+        
+        
+        
+        
     }//GEN-LAST:event_jButtonCreateUser1ActionPerformed
 
     /**

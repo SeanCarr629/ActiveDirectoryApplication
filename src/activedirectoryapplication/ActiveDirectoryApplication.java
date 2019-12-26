@@ -153,7 +153,7 @@ public class ActiveDirectoryApplication {
    
     //Method To Create New User
     
-        public static void CreateUser(String userName, String enteredLocation, String enteredDepartment,
+        public static void CreateUser(String firstName, String lastName, String enteredLocation, String enteredDepartment,
         String enteredPhoneNumber, String enteredJobTitle) throws NamingException {
         
          //Variables
@@ -180,18 +180,17 @@ public class ActiveDirectoryApplication {
      
       
         
-      int emptySpace =  userName.indexOf(" ");
-      String firstName = userName.substring(0, emptySpace);
-      String lastName = userName.substring(emptySpace);
-      String fullName = firstName + "" + lastName;
+     // int emptySpace =  userName.indexOf(" ");
+      
+      String fullName = firstName + " " + lastName;
       String emailAddress = firstName + "." + lastName.trim() + "@topaz-usa.com";
-      char firstInitial = userName.charAt(0);
+      char firstInitial = firstName.charAt(0);
       String loginName = firstInitial + lastName.trim();
       
         
          //Add user attributes
         
-        attrs.put("cn", userName);
+        attrs.put("cn", fullName);
         attrs.put("givenName", firstName);
         attrs.put("sn",lastName);
         attrs.put("l", locationDetails.get("city"));
@@ -217,7 +216,7 @@ public class ActiveDirectoryApplication {
         
        
         //Create user
-        ctx.createSubcontext("CN="+userName + ",OU=users" + ",OU=" + locationDetails.get("orgUnit") + ",DC=lab,DC=home", attrs);
+        ctx.createSubcontext("CN="+fullName + ",OU=users" + ",OU=" + locationDetails.get("orgUnit") + ",DC=lab,DC=home", attrs);
         ctx.close();
     
     
@@ -261,9 +260,27 @@ DirContext ctx = new InitialDirContext(ldapEnv);
 //Method to delete user
   public static void DeleteUser(String userName, String orgUnit) throws NamingException{
      
-   //   DirContext ctx = AuthenticateAD();
+      DirContext ctx = AuthenticateAD();
       
-   //   ctx.destroySubcontext("CN="+userName + ",OU=users" + ",OU=" + orgUnit + ",DC=lab,DC=home");
+      
+      
+      
+        switch (orgUnit) {
+        case "New York":
+            orgUnit = "Topaz-NY";
+            break;
+         case "California":
+            orgUnit = "Topaz-CA";
+            break;
+         case "Jackonsville":
+            orgUnit = "Topaz-FL";
+             break;
+         case "Pennsylvania":
+            orgUnit = "Topaz-PA";
+             break;
+  }
+      
+      ctx.destroySubcontext("CN="+userName + ",OU=users" + ",OU=" + orgUnit + ",DC=lab,DC=home");
       
     
      }   

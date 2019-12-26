@@ -8,11 +8,16 @@ package activedirectoryapplication;
 import static activedirectoryapplication.ActiveDirectoryApplication.AuthenticateAD;
 import static activedirectoryapplication.ActiveDirectoryApplication.DeleteUser;
 import static activedirectoryapplication.ActiveDirectoryApplication.doSearchOU;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -37,20 +42,18 @@ public class DisDelUser extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jButton_Disable = new javax.swing.JButton();
         jButton_Delete = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList_Location = new javax.swing.JList<>();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        jScrollPane3 = new javax.swing.JScrollPane();
         jList_User = new javax.swing.JList<>();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel1.setText("Disable/Delete User");
-
-        jButton_Disable.setText("Disable");
+        jLabel1.setText("Delete User");
 
         jButton_Delete.setText("Delete");
         jButton_Delete.addActionListener(new java.awt.event.ActionListener() {
@@ -62,82 +65,122 @@ public class DisDelUser extends javax.swing.JFrame {
         jLabel2.setText("Location:");
 
         jList_Location.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Topaz-NY", "Topaz-CA"};
+            String[] strings = { "New York", "California", "Pennsylvania", "Jacksonville"};
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        jList_Location.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent event) {
+                if (!event.getValueIsAdjusting()){
+                    JList source = (JList)event.getSource();
+                    String selected = source.getSelectedValue().toString();
+
+                    //////////////////////////////////////////////////////////////////////
+
+                    switch (selected) {
+                        case "New York":
+                        selected = "Topaz-NY";
+                        break;
+                        case "California":
+                        selected = "Topaz-CA";
+                        break;
+                        case "Jacksonville":
+                        selected = "Topaz-FL";
+                        break;
+                        case "Pennsylvania":
+                        selected = "Topaz-PA";
+                        break;
+                    }
+
+                    ///////////////////////////////////////////////////////////////////////////
+
+                    ///////////////////////////////////////////////////////////////
+                    DefaultListModel<String> model;
+
+                    ArrayList<String> users = new ArrayList<String>();
+
+                    try {
+
+                        users = doSearchOU(selected);
+                    } catch (NamingException ex) {
+                        Logger.getLogger(ActiveDirectoryApplication.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    model = new DefaultListModel<String>();
+                    for(String s : users){
+                        model.addElement(s.toString());
+                    }
+                    jList_User.setModel(model);
+                    jScrollPane3.setViewportView(jList_User);
+
+                    /////////////////////////////////////////////////////////
+
+                }
+            }
+        });
         jScrollPane1.setViewportView(jList_Location);
 
-        DefaultListModel<String> model;
+        jList_User.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = {  };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane3.setViewportView(jList_User);
 
-        ArrayList<String> users = new ArrayList<String>();
-
-        try {
-
-            users = doSearchOU(jList_Location.getSelectedValue());
-        } catch (NamingException ex) {
-            Logger.getLogger(ActiveDirectoryApplication.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        model = new DefaultListModel<String>();
-        for(String s : users){
-            model.addElement(s.toString());
-        }
-        jList_User.setModel(model);
-        jScrollPane2.setViewportView(jList_User);
+        jLabel3.setText("User:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(88, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton_Disable)
-                        .addGap(73, 73, 73)
-                        .addComponent(jButton_Delete)
-                        .addGap(109, 109, 109))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(64, 64, 64))))
             .addGroup(layout.createSequentialGroup()
-                .addGap(57, 57, 57)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(146, 146, 146)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(145, 145, 145)
+                                .addComponent(jButton_Delete)))
+                        .addGap(0, 142, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton_Delete)
-                    .addComponent(jButton_Disable))
-                .addContainerGap(102, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jLabel3))
+                .addGap(18, 18, 18)
+                .addComponent(jButton_Delete)
+                .addGap(90, 90, 90))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton_DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_DeleteActionPerformed
-        
-    /*    try {
-            DeleteUser(jTextField_UserName.getText(), jList_Location.getSelectedValue());
+       
+       try {
+            DeleteUser(jList_User.getSelectedValue(), jList_Location.getSelectedValue());
         } catch (NamingException ex) {
             Logger.getLogger(DisDelUser.class.getName()).log(Level.SEVERE, null, ex);
-        } */
-        
+        }         
         
     }//GEN-LAST:event_jButton_DeleteActionPerformed
 
@@ -178,12 +221,12 @@ public class DisDelUser extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton_Delete;
-    private javax.swing.JButton jButton_Disable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JList<String> jList_Location;
     private javax.swing.JList<String> jList_User;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     // End of variables declaration//GEN-END:variables
 }

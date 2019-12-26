@@ -38,7 +38,7 @@ public class AddUser extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
-        TF_UsersName = new javax.swing.JTextField();
+        TF_UsersFirstName = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -47,6 +47,7 @@ public class AddUser extends javax.swing.JFrame {
         List_Location = new javax.swing.JList<>();
         TF_UserJobTitle = new javax.swing.JTextField();
         TF_UserPhone = new javax.swing.JTextField();
+        TF_UsersLastName = new javax.swing.JTextField();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -56,11 +57,11 @@ public class AddUser extends javax.swing.JFrame {
 
         jLabel1.setText("Department");
 
-        TF_UsersName.setText("User's Name");
-        TF_UsersName.setToolTipText("");
-        TF_UsersName.addActionListener(new java.awt.event.ActionListener() {
+        TF_UsersFirstName.setText("First  Name");
+        TF_UsersFirstName.setToolTipText("");
+        TF_UsersFirstName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TF_UsersNameActionPerformed(evt);
+                TF_UsersFirstNameActionPerformed(evt);
             }
         });
 
@@ -101,31 +102,36 @@ public class AddUser extends javax.swing.JFrame {
             }
         });
 
+        TF_UsersLastName.setText("Last Name");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(TF_UsersName, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43)
-                .addComponent(TF_UserJobTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel2)
+                        .addGap(168, 168, 168)
+                        .addComponent(jButton1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(TF_UsersFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(TF_UsersLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(TF_UserJobTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(TF_UserPhone, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(168, 168, 168)
-                        .addComponent(jButton1)))
+                            .addComponent(TF_UserPhone, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -139,9 +145,10 @@ public class AddUser extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(TF_UsersName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TF_UsersFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(TF_UserJobTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(TF_UserPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(TF_UserPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TF_UsersLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(31, 31, 31)
                 .addComponent(jButton1)
                 .addContainerGap(19, Short.MAX_VALUE))
@@ -150,17 +157,17 @@ public class AddUser extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void TF_UsersNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TF_UsersNameActionPerformed
+    private void TF_UsersFirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TF_UsersFirstNameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_TF_UsersNameActionPerformed
+    }//GEN-LAST:event_TF_UsersFirstNameActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         
-       String userName = TF_UsersName.getText();
+       String userName = TF_UsersFirstName.getText();
      
         try {
-            CreateUser(TF_UsersName.getText(), List_Location.getSelectedValue(),
+            CreateUser(TF_UsersFirstName.getText(), TF_UsersLastName.getText(), List_Location.getSelectedValue(),
                     List_Departments.getSelectedValue(), TF_UserPhone.getText(), TF_UserJobTitle.getText());
         } catch (NamingException ex) {
             Logger.getLogger(AddUser.class.getName()).log(Level.SEVERE, null, ex);
@@ -220,7 +227,8 @@ public class AddUser extends javax.swing.JFrame {
     private javax.swing.JList<String> List_Location;
     private javax.swing.JTextField TF_UserJobTitle;
     private javax.swing.JTextField TF_UserPhone;
-    private javax.swing.JTextField TF_UsersName;
+    private javax.swing.JTextField TF_UsersFirstName;
+    private javax.swing.JTextField TF_UsersLastName;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
